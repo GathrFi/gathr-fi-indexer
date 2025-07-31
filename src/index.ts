@@ -89,7 +89,7 @@ ponder.on("GathrFi:GroupCreated", async ({ event, context }) => {
     .values({ id: groupId, name, admin, members: [...members] });
 
   await db.insert(userActivities).values({
-    id: event.transaction.hash,
+    id: `${event.transaction.hash}-${groupId}-admin`,
     user: admin,
     type: "ADD_GROUP",
     groupId,
@@ -98,10 +98,10 @@ ponder.on("GathrFi:GroupCreated", async ({ event, context }) => {
     transactionHash: event.transaction.hash,
   });
 
-  for (const member of members) {
+  for (let i = 0; i < members.length; i++) {
     await db.insert(userActivities).values({
-      id: event.transaction.hash,
-      user: member,
+      id: `${event.transaction.hash}-${groupId}-member-${i}`,
+      user: members[i] as `0x${string}`,
       type: "ADD_GROUP",
       groupId,
       blockNumber: event.block.number,
