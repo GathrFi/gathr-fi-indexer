@@ -1,4 +1,5 @@
 import { ponder } from "ponder:registry";
+import { MOCK_AAVE_POOL_ABI } from "../abis/GathrFiAbi";
 import {
   userStats,
   userActivities,
@@ -8,13 +9,13 @@ import {
 } from "ponder:schema";
 
 ponder.on("GathrFi:FundsDeposited", async ({ event, context }) => {
-  const { client, contracts, db } = context;
+  const { client, db } = context;
   const { user, amount } = event.args;
 
   try {
     const yieldAmount = (await client.readContract({
-      address: contracts.MockAavePool.address,
-      abi: contracts.MockAavePool.abi,
+      address: "0xfA1c92F494A701F7eA99fb3a6Fd10B198dA75bFD",
+      abi: MOCK_AAVE_POOL_ABI,
       functionName: "getUserYield",
       args: [user],
     })) as bigint;
@@ -48,13 +49,13 @@ ponder.on("GathrFi:FundsDeposited", async ({ event, context }) => {
 });
 
 ponder.on("GathrFi:FundsWithdrawn", async ({ event, context }) => {
-  const { client, contracts, db } = context;
+  const { client, db } = context;
   const { user, amount } = event.args;
 
   try {
     const yieldAmount = (await client.readContract({
-      address: contracts.MockAavePool.address,
-      abi: contracts.MockAavePool.abi,
+      address: "0xfA1c92F494A701F7eA99fb3a6Fd10B198dA75bFD",
+      abi: MOCK_AAVE_POOL_ABI,
       functionName: "getUserYield",
       args: [user],
     })) as bigint;
