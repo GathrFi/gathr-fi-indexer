@@ -1,19 +1,11 @@
 import { onchainEnum, onchainTable, index, primaryKey } from "ponder";
 
-// User Statistics
-export const userStats = onchainTable("user_stats", (t) => ({
-  id: t.hex().primaryKey(), // User address
-  balance: t.bigint().notNull(),
-  yieldPercentage: t.bigint().notNull(),
-  yieldAmount: t.bigint().notNull(),
-}));
-
 export const userActivityType = onchainEnum("activity_type", [
-  "DEPOSIT",
-  "WITHDRAW",
   "ADD_GROUP",
   "ADD_EXPENSE",
   "SETTLE_EXPENSE",
+  "ADD_INSTANT_EXPENSE",
+  "SETTLE_INSTANT_EXPENSE",
 ]);
 
 // User Activities
@@ -85,6 +77,40 @@ export const expenseSplits = onchainTable(
   (table) => ({
     pk: primaryKey({ columns: [table.groupId, table.expenseId, table.member] }),
     groupIdx: index().on(table.groupId),
+    memberIdx: index().on(table.member),
+  })
+);
+
+// Instant Expenses
+export const instantExpenses = onchainTable(
+  "instant_expenses",
+  (t) => ({
+    expenseId: t.bigint().primaryKey(),
+    payer: t.hex().notNull(),
+    amount: t.bigint().notNull(),
+    settledAmount: t.bigint().notNull(),
+    description: t.text().notNull(),
+    fullySettled: t.boolean().notNull(),
+    timestamp: t.bigint().notNull(),
+  }),
+  (table) => ({
+    payerIdx: index().on(table.payer),
+    timestampIdx: index().on(table.timestamp),
+  })
+);
+
+// Instant Expense Splits
+export const instantExpenseSplits = onchainTable(
+  "instant_expense_splits",
+  (t) => ({
+    expenseId: t.bigint().notNull(),
+    member: t.hex().notNull(),
+    amount: t.bigint().notNull(),
+    settled: t.boolean().notNull(),
+  }),
+  (table) => ({
+    pk: primaryKey({ columns: [table.expenseId, table.member] }),
+    expenseIdx: index().on(table.expenseId),
     memberIdx: index().on(table.member),
   })
 );

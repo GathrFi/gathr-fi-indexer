@@ -166,100 +166,9 @@ export const MOCK_USDC_ABI = [
   },
 ] as const;
 
-export const MOCK_AAVE_POOL_ABI = [
-  {
-    inputs: [{ internalType: "address", name: "_token", type: "address" }],
-    stateMutability: "nonpayable",
-    type: "constructor",
-  },
-  {
-    inputs: [],
-    name: "APY",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "SECONDS_PER_YEAR",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      { internalType: "uint256", name: "amount", type: "uint256" },
-      { internalType: "uint256", name: "startTime", type: "uint256" },
-    ],
-    name: "calculateYield",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [{ internalType: "address", name: "user", type: "address" }],
-    name: "getUserYield",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      { internalType: "address", name: "", type: "address" },
-      { internalType: "uint256", name: "", type: "uint256" },
-    ],
-    name: "supplies",
-    outputs: [
-      { internalType: "uint256", name: "amount", type: "uint256" },
-      { internalType: "uint256", name: "timestamp", type: "uint256" },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      { internalType: "address", name: "asset", type: "address" },
-      { internalType: "uint256", name: "amount", type: "uint256" },
-      { internalType: "address", name: "onBehalfOf", type: "address" },
-    ],
-    name: "supply",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "token",
-    outputs: [{ internalType: "contract IERC20", name: "", type: "address" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "usdcToken",
-    outputs: [{ internalType: "contract MockUSDC", name: "", type: "address" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      { internalType: "address", name: "asset", type: "address" },
-      { internalType: "uint256", name: "amount", type: "uint256" },
-      { internalType: "address", name: "to", type: "address" },
-    ],
-    name: "withdraw",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-] as const;
-
 export const GATHRFI_ABI = [
   {
-    inputs: [
-      { internalType: "address", name: "_usdcToken", type: "address" },
-      { internalType: "address", name: "_aavePool", type: "address" },
-    ],
+    inputs: [{ internalType: "address", name: "_usdcToken", type: "address" }],
     stateMutability: "nonpayable",
     type: "constructor",
   },
@@ -378,34 +287,6 @@ export const GATHRFI_ABI = [
   {
     anonymous: false,
     inputs: [
-      { indexed: true, internalType: "address", name: "user", type: "address" },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "amount",
-        type: "uint256",
-      },
-    ],
-    name: "FundsDeposited",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      { indexed: true, internalType: "address", name: "user", type: "address" },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "amount",
-        type: "uint256",
-      },
-    ],
-    name: "FundsWithdrawn",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
       {
         indexed: true,
         internalType: "uint256",
@@ -427,6 +308,74 @@ export const GATHRFI_ABI = [
       },
     ],
     name: "GroupCreated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "expenseId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "payer",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "description",
+        type: "string",
+      },
+      {
+        indexed: false,
+        internalType: "address[]",
+        name: "splitMembers",
+        type: "address[]",
+      },
+      {
+        indexed: false,
+        internalType: "uint256[]",
+        name: "splitAmounts",
+        type: "uint256[]",
+      },
+    ],
+    name: "InstantExpenseAdded",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "expenseId",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "member",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "InstantExpenseSettled",
     type: "event",
   },
   {
@@ -475,15 +424,6 @@ export const GATHRFI_ABI = [
     type: "event",
   },
   {
-    inputs: [],
-    name: "aavePool",
-    outputs: [
-      { internalType: "contract IAavePool", name: "", type: "address" },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [
       { internalType: "uint256", name: "_groupId", type: "uint256" },
       { internalType: "uint256", name: "_amount", type: "uint256" },
@@ -498,35 +438,24 @@ export const GATHRFI_ABI = [
   },
   {
     inputs: [
-      { internalType: "string", name: "_name", type: "string" },
-      { internalType: "address[]", name: "_members", type: "address[]" },
+      { internalType: "uint256", name: "_amount", type: "uint256" },
+      { internalType: "string", name: "_description", type: "string" },
+      { internalType: "address[]", name: "_splitMembers", type: "address[]" },
+      { internalType: "uint256[]", name: "_splitAmounts", type: "uint256[]" },
     ],
-    name: "createGroup",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [{ internalType: "uint256", name: "_amount", type: "uint256" }],
-    name: "depositFunds",
+    name: "addInstantExpense",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },
   {
     inputs: [
-      { internalType: "uint256", name: "", type: "uint256" },
-      { internalType: "uint256", name: "", type: "uint256" },
+      { internalType: "string", name: "_name", type: "string" },
+      { internalType: "address[]", name: "_members", type: "address[]" },
     ],
-    name: "expenses",
-    outputs: [
-      { internalType: "address", name: "payer", type: "address" },
-      { internalType: "uint256", name: "amount", type: "uint256" },
-      { internalType: "uint256", name: "amountSettled", type: "uint256" },
-      { internalType: "string", name: "description", type: "string" },
-      { internalType: "bool", name: "fullySettled", type: "bool" },
-    ],
-    stateMutability: "view",
+    name: "createGroup",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -568,52 +497,25 @@ export const GATHRFI_ABI = [
   },
   {
     inputs: [
-      { internalType: "uint256", name: "_groupId", type: "uint256" },
-      { internalType: "uint256", name: "_startIndex", type: "uint256" },
-      { internalType: "uint256", name: "_maxCount", type: "uint256" },
+      { internalType: "uint256", name: "_expenseId", type: "uint256" },
+      { internalType: "address", name: "_member", type: "address" },
     ],
-    name: "getGroupExpenses",
-    outputs: [
-      {
-        components: [
-          { internalType: "uint256", name: "expenseId", type: "uint256" },
-          { internalType: "address", name: "payer", type: "address" },
-          { internalType: "uint256", name: "amount", type: "uint256" },
-          { internalType: "uint256", name: "amountSettled", type: "uint256" },
-          { internalType: "string", name: "description", type: "string" },
-          { internalType: "bool", name: "fullySettled", type: "bool" },
-        ],
-        internalType: "struct GathrFi.ExpenseInfo[]",
-        name: "items",
-        type: "tuple[]",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [{ internalType: "address", name: "_user", type: "address" }],
-    name: "getUserGroups",
-    outputs: [
-      {
-        components: [
-          { internalType: "string", name: "name", type: "string" },
-          { internalType: "address", name: "admin", type: "address" },
-          { internalType: "address[]", name: "members", type: "address[]" },
-          { internalType: "bool", name: "exists", type: "bool" },
-        ],
-        internalType: "struct GathrFi.Group[]",
-        name: "items",
-        type: "tuple[]",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [{ internalType: "address", name: "_user", type: "address" }],
-    name: "getUserYield",
+    name: "getInstantAmountOwed",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "_expenseId", type: "uint256" }],
+    name: "getInstantExpense",
+    outputs: [
+      { internalType: "address", name: "payer", type: "address" },
+      { internalType: "uint256", name: "amount", type: "uint256" },
+      { internalType: "uint256", name: "settledAmount", type: "uint256" },
+      { internalType: "string", name: "description", type: "string" },
+      { internalType: "bool", name: "fullySettled", type: "bool" },
+      { internalType: "uint256", name: "timestamp", type: "uint256" },
+    ],
     stateMutability: "view",
     type: "function",
   },
@@ -628,6 +530,22 @@ export const GATHRFI_ABI = [
     inputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     name: "groupExpenseCount",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "uint256", name: "", type: "uint256" },
+      { internalType: "uint256", name: "", type: "uint256" },
+    ],
+    name: "groupExpenses",
+    outputs: [
+      { internalType: "address", name: "payer", type: "address" },
+      { internalType: "uint256", name: "amount", type: "uint256" },
+      { internalType: "uint256", name: "amountSettled", type: "uint256" },
+      { internalType: "string", name: "description", type: "string" },
+      { internalType: "bool", name: "fullySettled", type: "bool" },
+    ],
     stateMutability: "view",
     type: "function",
   },
@@ -650,6 +568,37 @@ export const GATHRFI_ABI = [
     ],
     name: "hasSettled",
     outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "uint256", name: "_expenseId", type: "uint256" },
+      { internalType: "address", name: "_member", type: "address" },
+    ],
+    name: "hasSettledInstant",
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "instantExpenseCount",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    name: "instantExpenses",
+    outputs: [
+      { internalType: "address", name: "payer", type: "address" },
+      { internalType: "uint256", name: "amount", type: "uint256" },
+      { internalType: "uint256", name: "amountSettled", type: "uint256" },
+      { internalType: "string", name: "description", type: "string" },
+      { internalType: "bool", name: "fullySettled", type: "bool" },
+      { internalType: "uint256", name: "timestamp", type: "uint256" },
+    ],
     stateMutability: "view",
     type: "function",
   },
@@ -685,6 +634,13 @@ export const GATHRFI_ABI = [
     type: "function",
   },
   {
+    inputs: [{ internalType: "uint256", name: "_expenseId", type: "uint256" }],
+    name: "settleInstantExpense",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [{ internalType: "address", name: "newOwner", type: "address" }],
     name: "transferOwnership",
     outputs: [],
@@ -699,13 +655,6 @@ export const GATHRFI_ABI = [
     type: "function",
   },
   {
-    inputs: [{ internalType: "address", name: "", type: "address" }],
-    name: "userBalances",
-    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [
       { internalType: "address", name: "", type: "address" },
       { internalType: "uint256", name: "", type: "uint256" },
@@ -716,10 +665,13 @@ export const GATHRFI_ABI = [
     type: "function",
   },
   {
-    inputs: [{ internalType: "uint256", name: "_amount", type: "uint256" }],
-    name: "withdrawFunds",
-    outputs: [],
-    stateMutability: "nonpayable",
+    inputs: [
+      { internalType: "address", name: "", type: "address" },
+      { internalType: "uint256", name: "", type: "uint256" },
+    ],
+    name: "userInstantExpenses",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
     type: "function",
   },
 ] as const;
